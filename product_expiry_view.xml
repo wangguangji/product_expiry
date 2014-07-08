@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_move_form_expiry">
+            <field name="name">stock.production.lot.form</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form" />
+            <field name="arch" type="xml">
+                <field name="date" position="replace">
+                    <field name="product_date" on_change="onchange_product_date(product_date,product_id,context)"/>
+                    <field name="life_date"  />
+                    <field name="use_date" invisible="1"/>
+                    <field name="removal_date" />
+                    <field name="alert_date" />
+                    <separator colspan="4" />
+                </field>
+                 
+                 <field name="name" position="replace">
+                     <field name="name"/>
+                 </field>
+            </field>
+        </record>
+        
+        <record id="view_production_lot_normal_tree" model="ir.ui.view">
+            <field name="name">stock.production.lot.tree</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_tree" />
+            <field name="arch" type="xml">
+               <xpath expr="//tree[@string='Serial Number']" position='replace'>
+                    <tree string="Serial Number" colors="red:removal_date and (removal_date &lt;current_date or removal_date == current_date)">
+                        <field name="name"/>
+                        <field name="product_id"/>
+                        <field name="stock_available"/>
+                        <field name="alert_date" />
+                        <field name="removal_date" />
+                    </tree>
+                </xpath>
+            </field>
+        </record>
+        <!-- readonly="1" modifiers="{'readonly': true, 'required': true}" -->
+        <record model="ir.ui.view" id="view_product_form_expiry">
+            <field name="name">product.normal.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.view_normal_procurement_locations_form" />
+            <field name="arch" type="xml">
+                <group name="Weights" position="after">
+                    <group string="Dates">
+                        <field name="life_time" />
+                        <field name="use_time" invisible="1"/>
+                        <field name="removal_time" />
+                        <field name="alert_time" />
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</openerp>
+
